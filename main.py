@@ -6,7 +6,7 @@ import socket
 maxdatavolume = input('pacSize?- ')
 localhostip = ("'" + input('ip?- ') + "'")
 localhostport = input('port?- ')
-msgencode = "utf-8"
+msgencode = 'utf-8'
 defmsg = "сервер работает, комп горяч"
 LOGfile_patch: str = ("'" + input("logPatch?- ") + "'")
 
@@ -41,11 +41,12 @@ def StartServer() -> object:
 
 def load_page_from_get_request(request_data):
     HDRS = 'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
+    HDRS_404 = 'HTTP/1.1 404 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
     path = request_data.split(" ")[1]
     response = ""
-    with open("htmlview"+path, "rb") as file:
-        response = file.read()
-        return HDRS.encode(msgencode) + response
-
-if __name__ == "__main__":
-    StartServer()
+    try:
+        with open('htmlview' + path, 'rb') as file:
+            response = file.read()
+            return HDRS.encode(msgencode) + response
+    except FileNotFoundError:
+        return (HDRS_404 + 'no page').encode(msgencode)

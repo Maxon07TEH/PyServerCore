@@ -49,12 +49,9 @@ def load_page_from_get_request(request_data):
             response = file.read()
             return HDRS.encode(msgencode) + response
     except FileNotFoundError:
-<<<<<<< Updated upstream
         return (HDRS_404 + 'no page').encode(msgencode)
-=======
         print(f"File not found: htmlview{path}")
         return HDRS_404.encode('utf-8') + b"<h1>404 Error: Page not found, idi v sraku</h1>"
->>>>>>> Stashed changes
 
 if __name__ == "__main__":
     StartServer()

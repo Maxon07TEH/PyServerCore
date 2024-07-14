@@ -7,15 +7,15 @@ localhostip = ("'" + input('ip?- ') + "'")
 localhostport = input('port?- ')
 msgencode = "utf-8"
 defmsg = "сервер работает, комп горяч"
-LOGfile_patch: str = ("'" + input("logPatch?-") + "'")
+LOGfile_patch: str = ("'" + input("logPatch?- ") + "'")
 
 if maxdatavolume == "def" or "default":
-    maxdatavolume = 1024
-if localhostip == "def" or "default":
+    maxdatavolume = 2048
+if localhostip == "def" or "default" or "'def'" or "'default'":
     localhostip = "127.0.0.1"
 if localhostport == "def" or "default":
     localhostport = 2000
-if LOGfile_patch == "def" or "default":
+if LOGfile_patch == "def" or "default" or "'def'" or "'default'":
     LOGfile_patch = "connectLog.txt"
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -32,8 +32,8 @@ while True:
     HDRS = 'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
     user, adres = server.accept()
     data = user.recv(maxdatavolume)
-    WriteConLOG()
+
     print(data)
     user.send(HDRS.encode(msgencode) + defmsg.encode(msgencode))
 
-    user.send(input().encode(msgencode))
+    user.send("\n" + input().encode(msgencode))

@@ -24,28 +24,32 @@ if LOGfile_patch == "def" or "default" or "'def'" or "'default'" or "":
 #    LOGfile.close()
 
 def StartServer():
-#    try:
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind((localhostip, localhostport))
-    server.listen(8)
-    while True:
+    try:
+        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server.bind((localhostip, localhostport))
+        server.listen(4)
         print("Server started")
-        user, adres = server.accept()
-        data = user.recv(maxdatavolume).decode(msgencode)
-        print(data)
-        user.send(load_page_from_get_request(data))
-        user.shutdown(socket.SHUT_WR)
-#    except KeyboardInterrupt:
-#        server.close()
-#        print("оффнулся")
+        while True:
+            user, adres = server.accept()
+            data = user.recv(maxdatavolume).decode(msgencode)
+            print(data)
+            user.send(load_page_from_get_request(data))
+            user.shutdown(socket.SHUT_WR)
+    except KeyboardInterrupt:
+        server.close()
+        print("оффнулся")
 
 def load_page_from_get_request(request_data):
     HDRS = 'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
-    path: object = request_data.split(" ")[1]
+    HDRS_404 = 'HTTP/1.1 404 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
+    path = request_data.split(" ")[1]
     response = ""
-    with open("htmlview"+path, "rb") as file:
-        response = file.read()
-        return HDRS.encode(msgencode) + response
+    try:
+        with open("htmlview"+path, "rb") as file:
+            response = file.read()
+            return HDRS.encode(msgencode) + response
+    except FileNotFoundError:
+        return (HDRS_404 + 'no page'.encode(msgencode))
 
 if __name__ == "__main__":
     StartServer()

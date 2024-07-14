@@ -23,7 +23,7 @@ def WriteLOG(LOGcontent):
     LOGfile.write(LOGcontent)
     LOGfile.close()
 
-def StartServer():
+def StartServer() -> object:
     try:
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.bind((localhostip, localhostport))

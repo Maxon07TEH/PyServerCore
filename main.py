@@ -6,7 +6,7 @@ import socket
 maxdatavolume = input('pacSize?- ')
 localhostip = ("'" + input('ip?- ') + "'")
 localhostport = input('port?- ')
-msgencode = "utf-8"
+msgencode = 'utf-8'
 defmsg = "сервер работает, комп горяч"
 LOGfile_patch: str = ("'" + input("logPatch?- ") + "'")
 
@@ -18,18 +18,18 @@ if localhostport == "def" or "default" or "":
     localhostport = 2000
 if LOGfile_patch == "def" or "default" or "'def'" or "'default'" or "":
     LOGfile_patch = "connectLog.txt"
-def WriteLOG(LOGcontent):
-    LOGfile = open(LOGfile_patch, 'r+')
-    LOGfile.write(LOGcontent)
-    LOGfile.close()
+#def WriteLOG(LOGcontent):
+#    LOGfile = open(LOGfile_patch, 'r+')
+#    LOGfile.write(LOGcontent)
+#    LOGfile.close()
 
 def StartServer():
     try:
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.bind((localhostip, localhostport))
-        server.listen(8)
+        server.listen(4)
+        print("Server started")
         while True:
-            print("Server started")
             user, adres = server.accept()
             data = user.recv(maxdatavolume).decode(msgencode)
             print(data)
@@ -65,6 +65,7 @@ def load_page_from_get_request(request_data):
     except FileNotFoundError:
         print(f"File not found: htmlview{path}")
         return HDRS_404.encode('utf-8') + b"<h1>404 Error: Page not found</h1>"
+
 
 if __name__ == "__main__":
     StartServer()

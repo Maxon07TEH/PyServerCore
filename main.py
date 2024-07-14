@@ -56,6 +56,7 @@ def load_page_from_get_request(request_data):
     path = request_parts[1]
     if path == '/':
         path = '/home.html'
+
     response = ""
 
     try:
@@ -63,14 +64,8 @@ def load_page_from_get_request(request_data):
             response = file.read()
         return HDRS_200.encode('utf-8') + response
     except FileNotFoundError:
-
-        return (HDRS_404 + 'no page').encode(msgencode)
-        print(f"File not found: htmlview{path}")
-        return HDRS_404.encode('utf-8') + b"<h1>404 Error: Page not found, idi v sraku</h1>"
-
         print(f"File not found: htmlview{path}")
         return HDRS_404.encode('utf-8') + b"<h1>404 Error: Page not found</h1>"
-
 
 
 if __name__ == "__main__":

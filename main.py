@@ -18,30 +18,30 @@ if localhostport == "def" or "default" or "":
     localhostport = 2000
 if LOGfile_patch == "def" or "default" or "'def'" or "'default'" or "":
     LOGfile_patch = "connectLog.txt"
-def WriteLOG(LOGcontent):
-    LOGfile = open(LOGfile_patch, 'r+')
-    LOGfile.write(LOGcontent)
-    LOGfile.close()
+#def WriteLOG(LOGcontent):
+#    LOGfile = open(LOGfile_patch, 'r+')
+#    LOGfile.write(LOGcontent)
+#    LOGfile.close()
 
 def StartServer():
-    try:
-        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server.bind((localhostip, localhostport))
-        server.listen(8)
-        while True:
-            print("Server started")
-            user, adres = server.accept()
-            data = user.recv(maxdatavolume).decode(msgencode)
-            print(data)
-            user.send(load_page_from_get_request(data))
-            user.shutdown(socket.SHUT_WR)
-    except KeyboardInterrupt:
-        server.close()
-        print("оффнулся")
+#    try:
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((localhostip, localhostport))
+    server.listen(8)
+    while True:
+        print("Server started")
+        user, adres = server.accept()
+        data = user.recv(maxdatavolume).decode(msgencode)
+        print(data)
+        user.send(load_page_from_get_request(data))
+        user.shutdown(socket.SHUT_WR)
+#    except KeyboardInterrupt:
+#        server.close()
+#        print("оффнулся")
 
 def load_page_from_get_request(request_data):
     HDRS = 'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
-    path = request_data.split(" ")[1]
+    path: object = request_data.split(" ")[1]
     response = ""
     with open("htmlview"+path, "rb") as file:
         response = file.read()

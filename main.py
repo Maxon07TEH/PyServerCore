@@ -1,41 +1,41 @@
 #на библиотеке pySocket, настройки в консоли, сервак
 import socket
+import string
 
 #сеттинг#
+HDRS = 'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
 maxdatavolume = input('pacSize?- ')
 localhostip = ("'" + input('ip?- ') + "'")
 localhostport = input('port?- ')
 msgencode = "utf-8"
 defmsg = "сервер работает, комп горяч"
-LOGfile_patch = input("logPatch")
+LOGfile_patch: str = ("'" + input("logPatch?- ") + "'")
 
 if maxdatavolume == "def" or "default":
-    maxdatavolume = 1024
-if localhostip == "def" or "default":
+    maxdatavolume = 2048
+if localhostip == "def" or "default" or "'def'" or "'default'":
     localhostip = "127.0.0.1"
 if localhostport == "def" or "default":
     localhostport = 2000
-if LOGfile_patch == "def" or "default":
+if LOGfile_patch == "def" or "default" or "'def'" or "'default'":
     LOGfile_patch = "connectLog.txt"
+def WriteLOG(LOGcontent):
+    LOGfile = open(LOGfile_patch, 'r+')
+    LOGfile.write(LOGcontent)
+    LOGfile.close()
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((localhostip, localhostport))
-
-server.listen(32)
-
-def WriteConLOG():
+def StartServer():
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((localhostip, localhostport))
+    server.listen(8)
+    print("Server started")
     user, adres = server.accept()
-    data = user.recv(maxdatavolume)
-
-    with open(LOGfile_patch, 'r+') as f:
-        LOGfile_patch.write(data)
-
-while True:
-    HDRS = 'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
-    user, adres = server.accept()
-
-    data = user.recv(maxdatavolume)
+    data = user.recv(maxdatavolume).decode(msgencode)
     print(data)
     user.send(HDRS.encode(msgencode) + defmsg.encode(msgencode))
 
-    user.send(input().encode(msgencode))
+def LoadPage(request_data):
+    path = request_data.split("")[1]
+
+while True:
+    print("while")

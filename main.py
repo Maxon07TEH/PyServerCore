@@ -6,7 +6,7 @@ import socket
 maxdatavolume = input('pacSize?- ')
 localhostip = ("'" + input('ip?- ') + "'")
 localhostport = input('port?- ')
-msgencode = 'utf-8'
+msgencode = "utf-8"
 defmsg = "сервер работает, комп горяч"
 LOGfile_patch: str = ("'" + input("logPatch?- ") + "'")
 
@@ -23,7 +23,7 @@ def WriteLOG(LOGcontent):
     LOGfile.write(LOGcontent)
     LOGfile.close()
 
-def StartServer() -> object:
+def StartServer():
     try:
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.bind((localhostip, localhostport))
@@ -39,14 +39,32 @@ def StartServer() -> object:
         server.close()
         print("оффнулся")
 
+
 def load_page_from_get_request(request_data):
-    HDRS = 'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
-    HDRS_404 = 'HTTP/1.1 404 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
-    path = request_data.split(" ")[1]
+    HDRS_200 = 'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
+    HDRS_404 = 'HTTP/1.1 404 Not Found\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
+
+    if not request_data:
+        print("Empty request data")
+        return HDRS_404.encode('utf-8') + b"<h1>404 Error: Page not found</h1>"
+
+    request_parts = request_data.split(" ")
+    if len(request_parts) < 2:
+        print(f"Invalid request data: {request_data}")
+        return HDRS_404.encode('utf-8') + b"<h1>404 Error: Page not found</h1>"
+
+    path = request_parts[1]
+    if path == '/':
+        path = '/home.html'
     response = ""
+
     try:
-        with open('htmlview' + path, 'rb') as file:
+        with open("htmlview" + path, "rb") as file:
             response = file.read()
-            return HDRS.encode(msgencode) + response
+        return HDRS_200.encode('utf-8') + response
     except FileNotFoundError:
-        return (HDRS_404 + 'no page').encode(msgencode)
+        print(f"File not found: htmlview{path}")
+        return HDRS_404.encode('utf-8') + b"<h1>404 Error: Page not found</h1>"
+
+if __name__ == "__main__":
+    StartServer()

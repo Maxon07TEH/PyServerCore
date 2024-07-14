@@ -7,7 +7,7 @@ localhostip = ("'" + input('ip?- ') + "'")
 localhostport = input('port?- ')
 msgencode = "utf-8"
 defmsg = "сервер работает, комп горяч"
-LOGfile_patch = input("logPatch")
+LOGfile_patch: str = ("'" + input("logPatch?-") + "'")
 
 if maxdatavolume == "def" or "default":
     maxdatavolume = 1024
@@ -24,9 +24,6 @@ server.bind((localhostip, localhostport))
 server.listen(32)
 
 def WriteConLOG():
-    user, adres = server.accept()
-    data = user.recv(maxdatavolume)
-
     LOGfile = open(LOGfile_patch, 'r+')
     LOGfile.write(data)
     LOGfile.close()

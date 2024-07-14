@@ -27,14 +27,15 @@ def WriteConLOG():
     user, adres = server.accept()
     data = user.recv(maxdatavolume)
 
-    with open(LOGfile_patch, 'r+') as f:
-        LOGfile_patch.write(data)
+    LOGfile = open(LOGfile_patch, 'r+')
+    LOGfile.write(data)
+    LOGfile.close()
 
 while True:
     HDRS = 'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n'
     user, adres = server.accept()
-
     data = user.recv(maxdatavolume)
+    WriteConLOG()
     print(data)
     user.send(HDRS.encode(msgencode) + defmsg.encode(msgencode))
 

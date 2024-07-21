@@ -3,12 +3,23 @@ import socket
 #import string
 
 #сеттинг#
-maxdatavolume = input('pacSize?- ')
-localhostip = ("'" + input('ip?- ') + "'")
-localhostport = input('port?- ')
-msgencode = 'utf-8'
-defmsg = "сервер работает, комп горяч"
-LOGfile_patch: str = ("'" + input("logPatch?- ") + "'")
+inipath = "setting.ini"
+with open(inipath, "r+") as file:
+    text = ""
+    pstext = text.split(" = ")[1]
+
+    text = file.readlines()[1]
+    maxdatavolume = text.split(" = ")[1]
+    text = file.readlines()[1]
+    localhostip = text.split(" = ")[1]
+    text = file.readlines()[2]
+    localhostport = text.split(" = ")[1]
+    text = file.readlines()[3]
+    msgencode = text.split(" = ")[1]
+    text = file.readlines()[4]
+    defmsg = text.split(" = ")[1]
+    text = file.readlines()[5]
+    LOGfile_patch = text.split(" = ")[1]
 
 if maxdatavolume == "def" or "default" or "":
     maxdatavolume = 2048

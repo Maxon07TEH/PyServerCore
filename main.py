@@ -1,6 +1,7 @@
 #на библиотеке pySocket, настройки в консоли, сервак
 import socket
 import linecache
+#from datetime import datetime, timezone
 #import string
 
 #сеттинг#
@@ -18,7 +19,8 @@ tmpline = linecache.getline("setting.ini", 5)
 defmsg = tmpline.split(" = ")[1]
 tmpline = linecache.getline("setting.ini", 6)
 LOGfile_patch = tmpline.split(" = ")[1]
-
+tmpline = linecache.getline("setting.ini", 7)
+maxusersinline = tmpline.split(" = ")[1]
 if maxdatavolume == "def" or "default" or "":
     maxdatavolume = 2048
 if localhostip == "def" or "default" or "'def'" or "'default'" or "":
@@ -27,10 +29,10 @@ if localhostport == "def" or "default" or "":
     localhostport = 2000
 if LOGfile_patch == "def" or "default" or "'def'" or "'default'" or "":
     LOGfile_patch = "connectLog.txt"
-#def WriteLOG(LOGcontent):
-#    LOGfile = open(LOGfile_patch, 'r+')
-#    LOGfile.write(LOGcontent)
-#    LOGfile.close()
+
+#
+#
+#
 
 def StartServer():
     try:
@@ -39,9 +41,15 @@ def StartServer():
         server.listen(4)
         print("Server started")
         while True:
+#            dtnow:str = datetime.now(timezone.utc)
             user, adres = server.accept()
             data = user.recv(maxdatavolume).decode(msgencode)
             print(data)
+            LOGfile = open(LOGfile_patch, 'a+')
+#            LOGfile.write(dtnow)
+            LOGfile.write(data)
+#            LOGfile.write("\n")
+            LOGfile.close()
             user.send(load_page_from_get_request(data))
             user.shutdown(socket.SHUT_WR)
     except KeyboardInterrupt:

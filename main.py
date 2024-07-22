@@ -5,7 +5,6 @@ import linecache
 
 #сеттинг#
 inipath = "setting.ini"
-tmpline = ""
 
 tmpline = linecache.getline("setting.ini", 1)
 maxdatavolume = tmpline.split(" = ")[1]

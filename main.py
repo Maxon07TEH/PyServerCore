@@ -1,24 +1,24 @@
 #на библиотеке pySocket, настройки в консоли, сервак
 import socket
+import linecache
 #import string
 
 #сеттинг#
 inipath = "setting.ini"
-with open(inipath, "r+") as settingfile:
-    text = ""
+tmpline = ""
 
-    text = settingfile.readlines()[0]
-    maxdatavolume = text.split(" = ")[1]
-    text = settingfile.readlines()[1]
-    localhostip = text.split(" = ")[1]
-    text = settingfile.readlines()[2]
-    localhostport = text.split(" = ")[1]
-    text = settingfile.readlines()[3]
-    msgencode = text.split(" = ")[1]
-    text = settingfile.readlines()[4]
-    defmsg = text.split(" = ")[1]
-    text = settingfile.readlines()[5]
-    LOGfile_patch = text.split(" = ")[1]
+tmpline = linecache.getline("setting.ini", 1)
+maxdatavolume = tmpline.split(" = ")[1]
+tmpline = linecache.getline("setting.ini", 2)
+localhostip = tmpline.split(" = ")[1]
+tmpline = linecache.getline("setting.ini", 3)
+localhostport = tmpline.split(" = ")[1]
+tmpline = linecache.getline("setting.ini", 4)
+msgencode = tmpline.split(" = ")[1]
+tmpline = linecache.getline("setting.ini", 5)
+defmsg = tmpline.split(" = ")[1]
+tmpline = linecache.getline("setting.ini", 6)
+LOGfile_patch = tmpline.split(" = ")[1]
 
 if maxdatavolume == "def" or "default" or "":
     maxdatavolume = 2048

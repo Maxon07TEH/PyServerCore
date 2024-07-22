@@ -4,21 +4,20 @@ import socket
 
 #сеттинг#
 inipath = "setting.ini"
-with open(inipath, "r+") as file:
+with open(inipath, "r+") as settingfile:
     text = ""
-    pstext = text.split(" = ")[1]
 
-    text = file.readlines()[1]
+    text = settingfile.readlines()[0]
     maxdatavolume = text.split(" = ")[1]
-    text = file.readlines()[1]
+    text = settingfile.readlines()[1]
     localhostip = text.split(" = ")[1]
-    text = file.readlines()[2]
+    text = settingfile.readlines()[2]
     localhostport = text.split(" = ")[1]
-    text = file.readlines()[3]
+    text = settingfile.readlines()[3]
     msgencode = text.split(" = ")[1]
-    text = file.readlines()[4]
+    text = settingfile.readlines()[4]
     defmsg = text.split(" = ")[1]
-    text = file.readlines()[5]
+    text = settingfile.readlines()[5]
     LOGfile_patch = text.split(" = ")[1]
 
 if maxdatavolume == "def" or "default" or "":

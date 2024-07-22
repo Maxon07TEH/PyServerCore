@@ -1,7 +1,7 @@
 #на библиотеке pySocket, настройки в консоли, сервак
 import socket
 import linecache
-#from datetime import datetime, timezone
+from datetime import datetime, timezone
 #import string
 
 #сеттинг#
@@ -30,9 +30,7 @@ if localhostport == "def" or "default" or "":
 if LOGfile_patch == "def" or "default" or "'def'" or "'default'" or "":
     LOGfile_patch = "connectLog.txt"
 
-#
-#
-#
+
 
 def StartServer():
     try:
@@ -41,14 +39,14 @@ def StartServer():
         server.listen(4)
         print("Server started")
         while True:
-#            dtnow:str = datetime.now(timezone.utc)
             user, adres = server.accept()
             data = user.recv(maxdatavolume).decode(msgencode)
+            print(datetime.now())
             print(data)
             LOGfile = open(LOGfile_patch, 'a+')
-#            LOGfile.write(dtnow)
+            LOGfile.write(str(datetime.now()))
+            LOGfile.write("\n")
             LOGfile.write(data)
-#            LOGfile.write("\n")
             LOGfile.close()
             user.send(load_page_from_get_request(data))
             user.shutdown(socket.SHUT_WR)

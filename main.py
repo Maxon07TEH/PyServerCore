@@ -1,8 +1,15 @@
 #на библиотеке pySocket, настройки в консоли, сервак
 import socket
 import linecache
-from datetime import datetime, timezone
+from datetime import datetime
+#from tkinter import*
 #import string
+#from pystray import MenuItem as item
+#import pystray
+#from PIL import Image
+#import tkinter as tk
+
+
 
 #сеттинг#
 inipath = "setting.ini"
@@ -33,14 +40,13 @@ if LOGfile_patch == "def" or "default" or "'def'" or "'default'" or "":
 
 
 def StartServer():
-    try:
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.bind((localhostip, localhostport))
         server.listen(4)
         print("Server started")
         while True:
             user, adres = server.accept()
-            data = user.recv(maxdatavolume).decode(msgencode)
+            data = user.recv(maxdatavolume).decode("utf-8")
             print(datetime.now())
             print(data)
             LOGfile = open(LOGfile_patch, 'a+')
@@ -50,9 +56,6 @@ def StartServer():
             LOGfile.close()
             user.send(load_page_from_get_request(data))
             user.shutdown(socket.SHUT_WR)
-    except KeyboardInterrupt:
-        server.close()
-        print("оффнулся")
 
 
 def load_page_from_get_request(request_data):
